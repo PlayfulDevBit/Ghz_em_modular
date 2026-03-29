@@ -20,8 +20,8 @@ Usage:
     python deploy_mitigation.py
 """
 
+from prefect import flow
 from prefect.runner.storage import GitRepository
-from ghz_mitigation_pipeline import ghz_mitigation_pipeline
 
 # ── CONFIGURE THESE ─────────────────────────────────────────────────────
 WORK_POOL_NAME = "my-managed-pool"                               # ← your work pool
@@ -29,7 +29,7 @@ GITHUB_URL     = "https://github.com/your-org/ghz-error-mitigation.git"  # ← y
 # ────────────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
-    deployment = ghz_mitigation_pipeline.from_source(
+    deployment = flow.from_source(
         source=GitRepository(
             url=GITHUB_URL,
             branch="main",
@@ -38,7 +38,7 @@ if __name__ == "__main__":
     )
 
     deployment_id = deployment.deploy(
-        name="ghz-error-mitigation-modular",
+        name="ghz-error-mitigation",
         work_pool_name=WORK_POOL_NAME,
         version="1.0.0",
         description=(
