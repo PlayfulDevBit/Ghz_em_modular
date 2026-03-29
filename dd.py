@@ -58,24 +58,31 @@ def apply_dd(circuit, backend) -> object:
 
     CUSTOMISATION IDEAS
     -------------------
-    - Change `dd_sequence` to try different pulse sequences:
-        [XGate(), XGate()]             — XX / Hahn echo (default)
-        [XGate(), YGate(), XGate(), YGate()]  — XY4 sequence
-        [XGate(), XGate(), XGate(), XGate()]  — CPMG-style
+    - Change `dd_sequence` to try different pulse sequences.
+      All gates must be native to the backend (R and CZ on Garnet):
+        [RGate(π,0), RGate(π,0)]                          — XX / Hahn echo (default)
+        [RGate(π,0), RGate(π,π/2), RGate(π,0), RGate(π,π/2)]  — XY4 sequence
+        [RGate(π,0), RGate(π,0), RGate(π,0), RGate(π,0)]  — CPMG-style
     - Pass `spacing` to PadDynamicalDecoupling to control pulse placement.
     - Use `pulse_alignment` for backends with strict timing constraints.
     - For IQM Garnet specifically, check available native gates before
       inserting sequences (Garnet uses R and CZ gates natively).
     """
-    from qiskit.circuit.library import XGate
+    from qiskit.circuit.library import RGate
     from qiskit.transpiler import PassManager
     from qiskit.transpiler.passes import (
         ALAPScheduleAnalysis,
         PadDynamicalDecoupling,
     )
+    import numpy as np
 
     # ── Choose your DD sequence here ──────────────────────────────────
-    dd_sequence = [XGate(), XGate()]   # XX / Hahn echo
+    # IQM Garnet native gate set is R (rotation) + CZ — XGate() is not
+    # supported directly. X is expressed as R(π, 0): rotation by π around X.
+    # The XX / Hahn echo sequence uses two such pulses so they cancel out
+    # logically (R(π,0)·R(π,0) = I) while refocusing idle qubit noise.
+    x_on_garnet = RGate(np.pi, 0)
+    dd_sequence = [x_on_garnet, x_on_garnet]   # XX / Hahn echo, Garnet-native
 
     try:
         pm = PassManager([
