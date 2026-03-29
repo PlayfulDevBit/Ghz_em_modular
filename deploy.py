@@ -38,7 +38,7 @@ if __name__ == "__main__":
     )
 
     deployment_id = deployment.deploy(
-        name="ghz-error-mitigation",
+        name="ghz-error-mitigation-modular",
         work_pool_name=WORK_POOL_NAME,
         version="1.0.0",
         description=(
