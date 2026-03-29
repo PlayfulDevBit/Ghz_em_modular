@@ -25,7 +25,7 @@ from prefect.runner.storage import GitRepository
 
 # ── CONFIGURE THESE ─────────────────────────────────────────────────────
 WORK_POOL_NAME = "my-managed-pool"                               # ← your work pool
-GITHUB_URL     = "https://github.com/PlayfulDevBit/Ghz_em_modular.git"  # ← your repo
+GITHUB_URL     = "https://github.com/your-org/ghz-error-mitigation.git"  # ← your repo
 # ────────────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
@@ -34,7 +34,7 @@ if __name__ == "__main__":
             url=GITHUB_URL,
             branch="main",
         ),
-        entrypoint="ghz_mitigation_pipeline.py:ghz_mitigation_pipeline",
+        entrypoint="pipeline.py:ghz_mitigation_pipeline",
     )
 
     deployment_id = deployment.deploy(
@@ -84,3 +84,4 @@ if __name__ == "__main__":
     print("  - Prefect Cloud account with PREFECT_API_URL and PREFECT_API_KEY set")
     print("  - Prefect Secret block 'iqm-resonance-token' containing IQM Resonance API key")
     print(f"  - All files pushed to: {GITHUB_URL}")
+    print("  - pipeline.py, dd.py, rem.py, zne.py all present in repo root")
