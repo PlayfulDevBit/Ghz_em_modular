@@ -25,7 +25,7 @@ from prefect.runner.storage import GitRepository
 
 # ── CONFIGURE THESE ─────────────────────────────────────────────────────
 WORK_POOL_NAME = "my-managed-pool"                               # ← your work pool
-GITHUB_URL     = "https://github.com/your-org/ghz-error-mitigation.git"  # ← your repo
+GITHUB_URL     = "https://github.com/PlayfulDevBit/Ghz_em_modular.git"  # ← your repo
 # ────────────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
